@@ -13,7 +13,7 @@ export default function CreateAccount() {
         <h1 className="text-2xl">안녕하세요!</h1>
         <h2 className="text-xl">Fill in the Form below to join!</h2>
       </div>
-      <form action={formAction} className="flex flex-col gap-2 ">
+      <form action={formAction} className="flex flex-col gap-2 items-center">
         <AuthInput
           name="email"
           required
@@ -34,13 +34,13 @@ export default function CreateAccount() {
           name="confirm_password"
           required
           type="password"
-          placeholder="다시 한번 비밀번호를 입력하세요."
+          placeholder="비밀번호를 한번 더 입력하세요."
           errors={state?.flattenError?.confirm_password}
         />
         <button
           type="submit"
           disabled={isPending}
-          className="mt-5 rounded-lg bg-white text-slate-800 px-4 py-2 hover:bg-gray-400 font-semibold transition-colors disabled:bg-gray-500 disabled:cursor-not-allowed"
+          className="mt-5 rounded-lg border-none  text-white px-4 py-2 hover:bg-white hover:text-slate-900 font-semibold transition-all disabled:bg-gray-500 disabled:cursor-not-allowed"
         >
           {isPending ? "저장 중.." : "가입완료"}
         </button>

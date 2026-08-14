@@ -85,6 +85,6 @@ export async function createAccount(prevState: any, formData: FormData) {
     session.id = user.id; // session객체에 user의 데이터 기록(쿠키, 미전달)
     await session.save(); // 암호화+ 쿠키로 브라우저에 전달
 
-    redirect("/");
+    redirect("/home");
   }
 }

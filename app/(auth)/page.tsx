@@ -22,7 +22,7 @@ export default function Home() {
       <div className="w-full max-w-xs flex flex-col items-center gap-4 mb-4">
         <Link
           href="/create-account"
-          className="w-full text-center bg-primary rounded-xl px-3 py-1 text-lg font-semibold hover:bg-emerald-700 transition-colors hover:no-underline"
+          className="w-full text-center bg-primary rounded-xl px-3 py-1 text-lg font-semibold hover:bg-white hover:text-slate-900 transition-colors hover:no-underline"
         >
           시작하기
         </Link>
