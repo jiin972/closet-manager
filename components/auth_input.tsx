@@ -21,7 +21,7 @@ export default function AuthInput({
       <input
         name={name}
         {...rest}
-        className={`w-full rounded-lg border border-white px-4 py-2 placeholder:text-gray-400 focus:outline-none focus:border-2 transition-all
+        className={`w-full rounded-lg border border-white px-4 py-2 placeholder:text-gray-400 focus:outline-none focus:border-2 transition-transform
           ${hasError ? "border-red-500" : "border-white focus:border-white"}`}
       />
       {errors?.map((error, index) => (
