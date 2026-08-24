@@ -10,6 +10,7 @@ const itemSchema = z.object({
   season: z.string().min(1, "계절을 선택해 주세요."),
   color: z.string().min(1, "색상을 선택해 주세요."),
   purpose: z.string().optional(),
+  brand: z.string().optional(),
 });
 
 export async function createItem(prevState: any, formData: FormData) {
@@ -19,6 +20,7 @@ export async function createItem(prevState: any, formData: FormData) {
     season: formData.get("season"),
     color: formData.get("color"),
     purpose: formData.get("purpose") || undefined, //빈 문자열이면 undefined처리
+    brand: formData.get("brand") || undefined,
   };
   //data유효성 검사
   const result = itemSchema.safeParse(data);
@@ -35,6 +37,7 @@ export async function createItem(prevState: any, formData: FormData) {
         season: result.data.season,
         color: result.data.color,
         purpose: result?.data?.purpose,
+        brand: result?.data?.brand,
         userId: session.id,
         imageUrl: "temp",
       },

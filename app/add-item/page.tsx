@@ -4,6 +4,7 @@ import ColorPicker from "@/components/color_picker";
 import FormSelect from "@/components/form_select";
 import { useActionState } from "react";
 import { createItem } from "./action";
+import FormInput from "@/components/form_input";
 
 export default function AddItems() {
   const [state, formAction, isPending] = useActionState(createItem, null);
@@ -59,6 +60,12 @@ export default function AddItems() {
             { value: "home", label: "홈웨어/이지웨어" },
           ]}
           errors={state?.flattenError?.purpose}
+        />
+        <FormInput
+          type="text"
+          name="brand"
+          placeholder="브랜드 입력(선택사항)"
+          errors={state?.flattenError?.brand}
         />
         <button
           type="submit"
