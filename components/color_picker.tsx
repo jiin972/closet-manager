@@ -13,6 +13,7 @@ interface ColorPickerProps {
   options: ColorOption[];
   errors?: string[];
   defaultValue?: string;
+  onChange?: (value: string) => void; //부모에 변경을 알려주는 콜백 추가
 }
 
 export default function ColorPicker({
@@ -20,6 +21,7 @@ export default function ColorPicker({
   options,
   errors = [],
   defaultValue,
+  onChange, //새로운 Props추가
 }: ColorPickerProps) {
   const [selected, setSelected] = useState(defaultValue ?? ""); //선택된 색상값 관리(초기갑 설정)
   const [isOpen, setIsOpen] = useState(false); //팔레트 열림/닫힘 상태 관리
@@ -27,6 +29,11 @@ export default function ColorPicker({
   //현재 선택된 색상의 전체 객체 정보 찾기
   const selectedColor = options.find((color) => color.value === selected);
 
+  const handleSelect = (value: string) => {
+    setSelected(value); //내부 상태(화면표시)
+    setIsOpen(false); //값 선택 시, 닫힘
+    onChange?.(value); //부모에 값 변경상태 전달
+  };
   return (
     <div>
       {/* 폼 제출(Server Action/Form Submit) 시 선택된 값을 서버로 넘겨주기 위한 숨겨진 input */}
@@ -55,8 +62,7 @@ export default function ColorPicker({
               key={color.value}
               type="button"
               onClick={() => {
-                setSelected(color.value);
-                setIsOpen(false);
+                handleSelect(color.value);
               }}
               style={{ backgroundColor: color.hex }}
               title={color.label}
