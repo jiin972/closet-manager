@@ -1,9 +1,9 @@
 "use client";
 
 import AuthInput from "@/components/auth_input";
+import { PASSWORD_MIN_LENGTH } from "@/lib/constants";
 import { useActionState } from "react";
 import { createAccount } from "./action";
-import { PASSWORD_MIN_LENGTH } from "@/lib/constants";
 
 export default function CreateAccount() {
   const [state, formAction, isPending] = useActionState(createAccount, null);
