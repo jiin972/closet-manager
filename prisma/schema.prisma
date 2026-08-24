@@ -40,6 +40,7 @@ model Item {
   purchasedAt DateTime?
   lastWornAt  DateTime?
   isFavorite  Boolean   @default(false)
+  rating      Int?
 
   createdAt DateTime @default(now())
 
