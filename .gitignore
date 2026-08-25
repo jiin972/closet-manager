@@ -50,3 +50,6 @@ next-env.d.ts
 # Database
 prisma/*.db
 *.db
+
+# Photo
+/public/upload
