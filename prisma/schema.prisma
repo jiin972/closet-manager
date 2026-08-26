@@ -30,7 +30,7 @@ model Item {
   name     String?
   category String
   season   String
-  color    String
+  color    String?
 
   //부가 정보(선택)
   brand       String?
