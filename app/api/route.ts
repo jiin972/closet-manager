@@ -1,3 +1,5 @@
+import { MY_OLLAMA } from "@/lib/constants";
+
 const ollamaUrl = process.env.OLLAMA_API_URL;
 
 /**
@@ -17,7 +19,7 @@ export async function POST(request: Request) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gemma4:e4b",
+        model: MY_OLLAMA,
         prompt: prompt, // 받은 프롬프트를 올라마에 전달
         stream: false,
       }),
