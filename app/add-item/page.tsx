@@ -2,17 +2,62 @@
 
 import ColorPicker from "@/components/color_picker";
 import FormSelect from "@/components/form_select";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { createItem } from "./action";
 import FormInput from "@/components/form_input";
+import { PhotoIcon } from "@heroicons/react/20/solid";
 
 export default function AddItems() {
   const [state, formAction, isPending] = useActionState(createItem, null);
+  //선택이미지 미리보기 구현
+  const [preview, setPreview] = useState("");
+  const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { files },
+    } = event; //event.target.files 구조분해 할당
+    if (!files) return;
+    const file = files[0]; //선택한 첫 파일 가져오기(파일정보)
+    if (!file.type.includes("image/")) {
+      return alert("이미지만 업로드 가능합니다.");
+    }
+    if (file.size > 4 * 1024 * 1024) {
+      return alert("4MB 이하의 파일만 업로드 가능합니다.");
+    }
+    const url = URL.createObjectURL(file); // 임시 미리보기 생성(클라이언트)
+    setPreview(url);
+  };
+
   return (
     <div className="flex flex-col gap-1 p-2 min-h-screen bg-app-gradient ">
       <h1>Add your item easily</h1>
       <h2>직접추가</h2>
-      <form action={formAction} className="flex flex-col gap-2 mt-5">
+      <form action={formAction} className="flex flex-col gap-2 mt-1">
+        <input
+          type="file"
+          onChange={onImageChange}
+          className="hidden"
+          id="photo"
+          name="photo"
+        />
+        <label
+          htmlFor="photo"
+          style={{
+            backgroundImage: `url(${preview})`,
+          }}
+          className={`border-2 border-dashed rounded-md aspect-square flex flex-col items-center justify-center
+            hover:cursor-pointer bg-cover bg-center
+            `}
+        >
+          {preview === "" && (
+            <>
+              <PhotoIcon className="w-5" />
+              <div>
+                <span>사진을 추가해 주세요</span>
+              </div>
+            </>
+          )}
+        </label>
+
         <FormSelect
           name="category"
           options={[
