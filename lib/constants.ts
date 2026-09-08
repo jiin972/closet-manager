@@ -32,3 +32,11 @@ export const PROMPT_FOR_DETAIL_PAGE = (
     "shoes": "실제id값"
   }
   `;
+
+export const CATEGORY_LABELS: Record<string, string> = {
+  top: "상의",
+  bottom: "하의",
+  outer: "아우터",
+  shoes: "신발",
+  accessory: "액세서리",
+};
