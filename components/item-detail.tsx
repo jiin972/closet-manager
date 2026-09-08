@@ -127,7 +127,7 @@ export default function ItemDetail({
           onChange={(value) => handleColorClick(value)}
         />
       </div>
-      <OllamaBtn itemId={itemId} initItem={initItem} />
+      <OllamaBtn itemId={itemId} />
     </div>
   );
 }

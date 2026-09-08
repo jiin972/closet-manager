@@ -62,7 +62,7 @@ export async function recommendOutfit(itemId: string) {
   const session = await getSession(); //로그인 확인
   const item = await db.item.findUnique({
     where: {
-      id: itemId, //상세page URL의 id
+      id: itemId, //상세page URL의 id를 ollamaBtn으로부터 전달받음
     },
   });
   if (!item) {
