@@ -9,7 +9,7 @@ import fs from "fs/promises";
 const itemSchema = z.object({
   category: z.string().min(1, "카테고리를 선택해 주세요."),
   season: z.string().min(1, "계절을 선택해 주세요."),
-  color: z.string().optional(),
+  color: z.string().min(1, "색상을 선택해 주세요."),
   purpose: z.string().optional(),
   brand: z.string().optional(),
   photo: z.string().min(1, "사진은 필수입니다."),
@@ -20,7 +20,7 @@ export async function createItem(prevState: any, formData: FormData) {
   const data = {
     category: formData.get("category"),
     season: formData.get("season"),
-    color: formData.get("color") || undefined,
+    color: formData.get("color"),
     purpose: formData.get("purpose") || undefined, //빈 문자열이면 undefined처리
     brand: formData.get("brand") || undefined,
     photo: formData.get("photo"),
@@ -56,7 +56,7 @@ export async function createItem(prevState: any, formData: FormData) {
       data: {
         category: result.data.category,
         season: result.data.season,
-        color: result?.data.color,
+        color: result.data.color,
         purpose: result?.data?.purpose,
         brand: result?.data?.brand,
         userId: session!.id,
