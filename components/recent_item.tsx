@@ -5,6 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
+/**무한스크롤을 가능하게 하는 컴포넌트
+ * - pagination을 위한 4개의 상태를 관리함
+ * - 작동 트리거는 useRef를 이용해 감시 대상(span태그)를 지정하고,
+ * IntersectionObserver로 그 태그가 화면에 보이는 순간을 감지함
+ * - 감지가 되면 서버액션을 호출해 다음 data를 불러와 기존 목록 뒤에 이어 붙이고,
+ * ([...prev, ...newItems]), 더 이상 없을 경우 무한 로딩을 방지하기 위해
+ * hasMore을 false로 바꿔 트김리거 자체를 화면에서 숨김
+ * @param initialItems - 서버 컴포넌트(page.tsx)에서 미리 조회해 전달한(props) 초기 목록
+ */
 export default function RecentItemsClient({
   initialItems,
 }: {
