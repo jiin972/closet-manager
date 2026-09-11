@@ -48,7 +48,7 @@ export default function RecentItemsClient({
           setIsLoading(false);
         }
       },
-      { threshold: 1, rootMargin: "0px 0px -100px 0px" }, //observe 옵션
+      { threshold: 0.1, rootMargin: "0px 0px -100px 0px" }, //observe 옵션, threshold 10%(모바일 권장)
     );
 
     //실행코드
