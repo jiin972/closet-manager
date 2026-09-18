@@ -4,6 +4,7 @@ import { callOllama } from "@/app/actions/call_ollama";
 import { PROMPT_FOR_DETAIL_PAGE } from "@/lib/constants";
 import db from "@/lib/db";
 import getSession from "@/lib/session";
+import { notFound } from "next/navigation";
 
 /**
  * DB의 아이템 상세정보를 업데이트해주는 함수
@@ -60,6 +61,9 @@ export async function updateItem(
  */
 export async function recommendOutfit(itemId: string) {
   const session = await getSession(); //로그인 확인
+  if (!session) {
+    return notFound();
+  }
   const item = await db.item.findUnique({
     where: {
       id: itemId, //상세page URL의 id를 ollamaBtn으로부터 전달받음
