@@ -1,11 +1,43 @@
 //상수화
-/** 매직넘버(magic number)제거 */
 
+import { Weather, WeatherPromptItem } from "@/app/(tabs)/home/action";
+
+/** 매직넘버(magic number)제거 */
 export const PASSWORD_MIN_LENGTH = 5;
 export const MY_OLLAMA = "gemma4:e4b";
 
 /**
- * AI와 HTTP통신을 할 함수에 전달할 프롬프트 상수변수
+ * AI와 HTTP통신을 할 함수에 전달할 프롬프트 상수변수(날씨 기반 추천)
+ * @param items 객체 배열을 인자로 받음
+ * @param weather 객체를 인자로 받음
+ */
+export const PROMPT_FOR_WEATHER = (
+  items: WeatherPromptItem[],
+  weather: Weather,
+) =>
+  `
+  너는 패션 코디네이터야.
+  아래 [날씨정보] 와 어울리는 의상 조합을 [내 옷장 목록]에서만 찾아줘.
+  [날씨정보]: ${JSON.stringify(weather)}
+  [내 옷장 목록]: ${JSON.stringify(items, null, 2)}
+
+  [응답 규칙]:
+  1. 반드시 순수 JSON 형식으로만 응답할 것.마크다운 코드블럭이나 다른 텍스트, 인사말, 설명은 절대 포함하지 말 것.
+  2. 각 카테고리(top, bottom, outer, shoes)에는 [내 옷장 목록]에 있는 실제 id 값만 넣을 것.
+  3. 해당 카테고리가 옷장에 없으면 null로 표시할 것.
+  4. 날씨(기온)와 계절을 고려해 season이 맞는 항목을 우선 고려할 것.
+
+  응답 형식 예시:
+  {
+    "top": "실제id값",
+    "bottom": "실제id값",
+    "outer": null,
+    "shoes": "실제id값"
+  }
+  `;
+
+/**
+ * AI와 HTTP통신을 할 함수에 전달할 프롬프트 상수변수(아이템 기반 추천)
  * @param item 객체를 인자로 받음
  * @param closet 객체의 배열을 인자로 받음
  */
