@@ -2,6 +2,7 @@ import WeatherWidget from "@/components/weather_widget";
 import Image from "next/image";
 import Link from "next/link";
 import { getRecentItems } from "./action";
+import WeatherSuggetion from "@/components/weather_suggetion";
 
 export default async function Home() {
   //최근 추가한 아이템을 생성일 기준으로 내림차순 10개 조회
@@ -11,6 +12,7 @@ export default async function Home() {
       <div className="flex flex-col justify-center gap-2">
         <div>
           <WeatherWidget />
+          <WeatherSuggetion />
         </div>
         <div className="flex justify-between p-2">
           <h3>최근 추가한 아이템</h3>
