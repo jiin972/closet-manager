@@ -4,7 +4,7 @@ import { Weather, WeatherPromptItem } from "@/app/(tabs)/home/action";
 
 /** 매직넘버(magic number)제거 */
 export const PASSWORD_MIN_LENGTH = 5;
-export const MY_OLLAMA = "gemma4:e4b";
+export const MY_OLLAMA = "gemma4:e2b";
 
 /**
  * AI와 HTTP통신을 할 함수에 전달할 프롬프트 상수변수(날씨 기반 추천)
@@ -23,7 +23,7 @@ export const PROMPT_FOR_WEATHER = (
 
   [응답 규칙]:
   1. 반드시 순수 JSON 형식으로만 응답할 것.마크다운 코드블럭이나 다른 텍스트, 인사말, 설명은 절대 포함하지 말 것.
-  2. 각 카테고리(top, bottom, outer, shoes)에는 [내 옷장 목록]에 있는 실제 id 값만 넣을 것.
+  2. 각 카테고리(top, bottom, outer, shoes)에는 [내 옷장 목록]에 있는 실제 id 값 하나만 넣을 것. 배열 아님
   3. 해당 카테고리가 옷장에 없으면 null로 표시할 것.
   4. 날씨(기온)와 계절을 고려해 season이 맞는 항목을 우선 고려할 것.
 
