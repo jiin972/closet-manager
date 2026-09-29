@@ -23,6 +23,9 @@ export async function getWeather(latitude: number, longitude: number) {
   const result = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`,
   );
+  if (!result.ok) {
+    return null;
+  }
   const data: WeatherResponse = await result.json();
   return {
     city: data.name,
