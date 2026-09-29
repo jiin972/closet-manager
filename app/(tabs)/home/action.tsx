@@ -56,7 +56,7 @@ export async function recommendByWeather(latitude: number, longitude: number) {
 
   // 1. 객체의 value에서 유효한 값(falsy제외)만 추려 문자열 배열로 생성함언( ids는 top,bottom등의 id를 가짐)
   // 이때, as string[]은 타입단언
-  const ids = Object.values(recommendation).filter(Boolean) as string[];
+  const ids = Object.values(recommendation).flat().filter(Boolean) as string[];
   // 2. 추천 의상 이미지 표현을 위해 db 재조회
   const recommendedItems = await db.item.findMany({
     where: { id: { in: ids } },
@@ -64,6 +64,7 @@ export async function recommendByWeather(latitude: number, longitude: number) {
   return { success: true, items: recommendedItems };
 }
 
+export type RecommendBWeather = Awaited<ReturnType<typeof recommendByWeather>>;
 export type Weather = Awaited<ReturnType<typeof getWeather>>; //실제 함수의 리턴타입을 그대로 export
 export type WeatherPromptItem = Awaited<
   ReturnType<
