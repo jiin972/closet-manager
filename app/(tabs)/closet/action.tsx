@@ -20,6 +20,7 @@ export async function getUser() {
     },
     select: {
       email: true,
+      name: true,
     },
   });
   return user;
