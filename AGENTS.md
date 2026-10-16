@@ -62,3 +62,35 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - Before making significant changes, briefly explain the planned approach.
 - After making changes, summarize what changed and how it was verified.
+
+## Scope and Approval
+
+- Treat the user's request as the authorized scope of work. Make necessary, localized file changes without asking for approval for every edit.
+- If the task requires substantial refactoring, changes outside the requested scope, or a materially different implementation approach, explain the plan and obtain approval before proceeding.
+- Obtain explicit approval before deleting files, changing the database schema, running destructive or difficult-to-reverse database operations, adding or removing dependencies, or changing major dependency versions.
+- Never overwrite or discard user data or existing user changes without explicit approval.
+
+## Dependencies and Commands
+
+- Do not install, remove, or upgrade packages unless explicitly requested or approved.
+- Before running commands that may delete data, overwrite files, modify production resources, or cause other irreversible effects, explain the impact and obtain approval.
+- Prefer existing dependencies and project utilities over introducing new ones.
+
+## Database and Environment
+
+- Never expose secrets, credentials, session keys, or environment variable values in logs, documentation, or responses.
+- Do not modify `.env` files or other secret-bearing configuration unless necessary and authorized.
+- Before applying database migrations, inspect the schema, migration history, and affected data. Obtain approval before applying changes that could cause data loss or affect production data.
+
+## Code Quality
+
+- Follow the existing naming conventions, formatting, component patterns, and error-handling practices.
+- Avoid unnecessary abstractions, duplicate utilities, speculative features, and unrelated refactoring.
+- Do not suppress TypeScript errors, ESLint warnings, or failing tests merely to make verification pass. Explain unresolved issues clearly.
+
+## Completion Report
+
+- Summarize the files changed and the purpose of each change.
+- Report the checks actually performed and their results.
+- Explicitly disclose any unverified behavior, failed checks, or remaining risks.
+- Do not claim that a test, build, migration, or other operation succeeded unless its result was verified.
