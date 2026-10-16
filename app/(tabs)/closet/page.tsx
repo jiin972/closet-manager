@@ -26,7 +26,7 @@ export default async function Closet() {
   const user = await getUser();
   return (
     <div className=" flex flex-col gap-2">
-      <h1>{`${user?.email}님의 아이템`}</h1>
+      <h1>{`${user?.name ? user.name : user?.email}님의 아이템`}</h1>
       {/*reduce함수로 카테고리별 그룹화한 함수 렌더링 */}
       {Object.entries(groupedItems).map(([category, categoryItems]) => (
         <div key={category}>
