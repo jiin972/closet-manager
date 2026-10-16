@@ -106,7 +106,8 @@ export async function recommendOutfit(itemId: string) {
 
   // 객체의 value에서 유효한 값(falsy제외)만 추려 문자열 배열로 생성함언( ids는 top,bottom등의 id를 가짐)
   // 이때, as string[]은 타입단언
-  const ids = Object.values(recommendation).filter(Boolean) as string[];
+  // 2차원 배열 반환을 고려해 .flat()메서드 적용(10/4)
+  const ids = Object.values(recommendation).flat().filter(Boolean) as string[];
 
   // 추천 의상 이미지 표현을 위해 db재조회
   const recommendedItems = await db.item.findMany({
