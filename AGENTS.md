@@ -1,96 +1,55 @@
-<!-- BEGIN:nextjs-agent-rules -->
-
-# This is NOT the Next.js you know
-
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
-
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
-
-<!-- END:nextjs-agent-rules -->
-
 # Project Instructions
+
+Respond in Korean. Code, identifiers, and commit messages stay in English.
+
+## Project Facts (verify against the repo if anything looks different)
+
+- Next.js 16 (App Router) + TypeScript + Prisma 7 + SQLite (dev).
+- Middleware file: proxy.ts (there is no middleware.ts).
+- Prisma client instance: lib/db.ts (driver adapter). Import db from there.
+- Prisma client is generated to app/generated/prisma.
+- Auth: iron-session. Use `getSession()` from `lib/session.ts` in Node code; `proxy.ts` uses `getProxySession` (Edge-safe).
+- Routes: `app/(tabs)/` holds home, closet, coordination, profile (shared tab-bar layout). `app/add-item/` is outside the group on purpose.
+- Each page keeps its server logic in its own `action.ts`. Any file whose functions are called from a `"use client"` component needs `"use server"` at the top.
+- Data access rules: filter queries by `userId: session.id`. Check item ownership (`item.userId === session.id`) before update/delete. Never select `password` for display data.
+- Uploads are written to `public/upload/` (gitignored). Never commit uploaded files.
+- LLM calls go through `callOllama` in `app/actions/call_ollama.ts`. LLM output can be truncated or malformed: always strip code fences, wrap `JSON.parse` in try/catch, and `.flat()` id arrays before a Prisma `in` query.
+- Shared UI: `FormInput`, `FormSelect`, `ColorPicker`. Reuse them before writing new inputs.
 
 ## General
 
-- Read this file before making changes.
-- Inspect existing code before creating or modifying files.
-- Make the smallest change necessary to complete the task.
-- Do not modify unrelated files.
-- Preserve existing user changes.
-
-## Project Structure
-
-- This is a Next.js application using TypeScript.
-- Use the existing project structure and patterns whenever possible.
-- Reuse existing components, utilities, and modules instead of creating duplicates.
+- Inspect existing code (callers, dependencies, Prisma schema) before editing.
+- Make the smallest change necessary. Do not touch unrelated files.
+- Follow existing patterns, naming, formatting, and error handling. No speculative features or unrelated refactoring.
+- If the user is learning a concept, explain it first and show code second.
 
 ## Documentation
 
-- Prefer documentation available in the local project over information from memory.
-- For Next.js APIs, read the relevant documentation in `node_modules/next/dist/docs/` before writing code when the API may have changed.
-- Use relevant project Skills when they apply to the task.
-- Inspect existing source code and configuration before introducing a new pattern or dependency.
+- For Next.js APIs, read `node_modules/next/dist/docs/` first.
+- For library versions or API changes not covered by local docs, use the `search-web` skill (`web_search`, then `fetch_content`) instead of answering from memory.
+- When answering a documentation or version question, answer only from content you actually read.
+- If you read any web page or doc, end the reply with a "Sources:" section listing exactly those URLs. Skip this section otherwise.
 
-## Database
+## Approval Required
 
-- This project uses Prisma.
-- Inspect the existing Prisma schema and database utilities before modifying database-related code.
-- Use the existing Prisma patterns and configuration.
-- Do not modify the database schema unless the task requires it.
+Make localized changes within the request freely. Ask first before:
 
-## Before Editing
+- Substantial refactoring, out-of-scope changes, or a different implementation approach
+- Deleting files
+- Changing the DB schema or running destructive DB operations: `prisma migrate reset`, `prisma db push --force-reset`, deleting `dev.db` or `public/upload/` (inspect schema, migration history, and affected data first)
+- Adding, removing, or upgrading dependencies
+- Commands that delete data, overwrite files, or are hard to reverse, including `git push --force`, `git clean`, `git reset --hard` (explain the impact first)
 
-1. Understand the relevant existing code.
-2. Identify related files, dependencies, and callers.
-3. Read relevant documentation and Skills when necessary.
-4. Make the smallest appropriate change.
-5. Verify the changes after editing.
+## Safety
 
-## Verification
+- Never expose secrets or env values, and never print API keys or session contents in logs. Do not modify `.env` unless necessary and authorized.
+- Never discard or overwrite user changes or data.
+- Do not commit unless asked. Do not run `git reset` or `git revert`.
+- Do not start another dev server. Assume `npm run dev` is already running.
 
-- Run relevant type checking, linting, and tests after making changes when available.
-- If verification fails, investigate and report the failure instead of hiding it.
-- Do not claim a task is complete if important verification has failed.
+## Verification and Report
 
-## Git
-
-- Do not commit changes unless explicitly requested.
-- Do not reset, revert, or discard existing user changes.
-- Do not modify unrelated changes in the working tree.
-
-## Communication
-
-- Before making significant changes, briefly explain the planned approach.
-- After making changes, summarize what changed and how it was verified.
-
-## Scope and Approval
-
-- Treat the user's request as the authorized scope of work. Make necessary, localized file changes without asking for approval for every edit.
-- If the task requires substantial refactoring, changes outside the requested scope, or a materially different implementation approach, explain the plan and obtain approval before proceeding.
-- Obtain explicit approval before deleting files, changing the database schema, running destructive or difficult-to-reverse database operations, adding or removing dependencies, or changing major dependency versions.
-- Never overwrite or discard user data or existing user changes without explicit approval.
-
-## Dependencies and Commands
-
-- Do not install, remove, or upgrade packages unless explicitly requested or approved.
-- Before running commands that may delete data, overwrite files, modify production resources, or cause other irreversible effects, explain the impact and obtain approval.
-- Prefer existing dependencies and project utilities over introducing new ones.
-
-## Database and Environment
-
-- Never expose secrets, credentials, session keys, or environment variable values in logs, documentation, or responses.
-- Do not modify `.env` files or other secret-bearing configuration unless necessary and authorized.
-- Before applying database migrations, inspect the schema, migration history, and affected data. Obtain approval before applying changes that could cause data loss or affect production data.
-
-## Code Quality
-
-- Follow the existing naming conventions, formatting, component patterns, and error-handling practices.
-- Avoid unnecessary abstractions, duplicate utilities, speculative features, and unrelated refactoring.
-- Do not suppress TypeScript errors, ESLint warnings, or failing tests merely to make verification pass. Explain unresolved issues clearly.
-
-## Completion Report
-
-- Summarize the files changed and the purpose of each change.
-- Report the checks actually performed and their results.
-- Explicitly disclose any unverified behavior, failed checks, or remaining risks.
-- Do not claim that a test, build, migration, or other operation succeeded unless its result was verified.
+- After changes, run `npx tsc --noEmit` and `npm run lint`. No tests are configured; say so instead of implying they ran.
+- Do not suppress TS/ESLint errors to pass. Report failures honestly.
+- Before significant changes, briefly explain the plan.
+- At the end, summarize changed files, checks actually run, results, and anything unverified. Do not claim success without verifying.
