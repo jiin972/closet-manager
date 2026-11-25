@@ -19,9 +19,10 @@ export async function callOllama(prompt: string) {
       prompt: prompt,
       format: "json",
       stream: false,
+      think: false,
       options: {
-        num_predict: 500, // 생성할 토큰 수를 제한하여 응답 속도 단축
-        temperature: 0.7, // 추론 속도 향상 및 JSON 일관성 유지
+        //num_predict: 500, // 생성할 토큰 수를 제한하여 응답 속도 단축
+        //temperature: 0.7, // 추론 속도 향상 및 JSON 일관성 유지
       },
     }),
   });
