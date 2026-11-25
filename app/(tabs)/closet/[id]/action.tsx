@@ -4,7 +4,42 @@ import { callOllama } from "@/app/actions/call_ollama";
 import { PROMPT_FOR_DETAIL_PAGE } from "@/lib/constants";
 import db from "@/lib/db";
 import getSession from "@/lib/session";
-import { notFound } from "next/navigation";
+import { revalidatePath } from "next/cache";
+import { notFound, redirect } from "next/navigation";
+
+/**
+ * DB 내 아이템을 삭제해 주는 함수
+ * - 세션기반의 사용자 권한 확인
+ * - 삭제 후 데이터 업데이트(revalidate)
+ * @param itemId
+ */
+
+export async function deleteItem(itemId: string) {
+  const session = await getSession();
+  const item = await db.item.findUnique({
+    where: {
+      id: itemId,
+    },
+    select: {
+      userId: true,
+    },
+  });
+  if (!item || item.userId !== session.id) {
+    return {
+      success: false,
+      error: "권한이 없습니다.",
+    };
+  }
+  // 변수에 담지 않음, 호출하는 쪽에서 결과를 안 씀.
+  await db.item.delete({
+    where: {
+      id: itemId,
+    },
+  });
+  // return불필요, redirect는 에러를 던져 이동하는 방식이라 맨 마지막에 둠
+  revalidatePath("/closet");
+  redirect("/closet");
+}
 
 /**
  * DB의 아이템 상세정보를 업데이트해주는 함수
@@ -32,21 +67,24 @@ export async function updateItem(
       userId: true,
     },
   });
+  // 소유자 확인, 남의 옷 id가 들어와도 수정/삭제 못하게 막음
   if (!item || item.userId !== session.id) {
     return {
       success: false,
       error: "권한이 없습니다.",
     };
   }
-  const updatedItem = await db.item.update({
+  // 변수에 담지 않음, 호출하는 쪽에서 결과를 안 씀.
+  await db.item.update({
     where: {
       id: itemId,
     },
     data,
   });
+  // 캐시 갱신, 안하면 useOptimistic이 옛날 값으로 되돌아 감
+  revalidatePath(`/closet/${itemId}`);
   return {
     success: true,
-    data: updatedItem,
   };
 }
 
