@@ -5,6 +5,7 @@ import { startTransition, useOptimistic } from "react";
 import ColorPicker from "./color_picker";
 import FormSelect from "./form_select";
 import OllamaBtn from "./ai_button";
+import DeleteItemBtn from "./delete_btn";
 
 export interface InitItemProps {
   category: string;
@@ -128,6 +129,7 @@ export default function ItemDetail({
         />
       </div>
       <OllamaBtn itemId={itemId} />
+      <DeleteItemBtn itemId={itemId} />
     </div>
   );
 }
