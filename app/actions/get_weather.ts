@@ -21,7 +21,7 @@ interface WeatherResponse {
 export async function getWeather(latitude: number, longitude: number) {
   const apiKey = process.env.OPEN_WEATHER_MAP_API;
   const result = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`,
+    `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric&lang=kr`,
   );
   if (!result.ok) {
     return null;
