@@ -4,7 +4,7 @@ import { Weather, WeatherPromptItem } from "@/app/(tabs)/home/action";
 
 /** 매직넘버(magic number)제거 */
 export const PASSWORD_MIN_LENGTH = 5;
-export const MY_OLLAMA = "gemma4:e2b";
+export const MY_OLLAMA = "closet-stylist";
 
 /**
  * AI와 HTTP통신을 할 함수에 전달할 프롬프트 상수변수(날씨 기반 추천)
