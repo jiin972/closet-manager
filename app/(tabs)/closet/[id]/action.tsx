@@ -98,8 +98,9 @@ export async function updateItem(
  * @param itemId - URL 동적 부분에서 추출한 id
  */
 export async function recommendOutfit(itemId: string) {
-  const session = await getSession(); //로그인 확인
-  if (!session) {
+  const session = await getSession();
+  // 로그인 안 하면 session은 빈 객체라 id로 확인
+  if (!session.id) {
     return notFound();
   }
   const item = await db.item.findUnique({
@@ -107,8 +108,10 @@ export async function recommendOutfit(itemId: string) {
       id: itemId, //상세page URL의 id를 ollamaBtn으로부터 전달받음
     },
   });
-  if (!item) {
-    return { success: false, error: "아이템을 찾을 수 없습니다." }; //item이 null일 가능성 고려
+  // 아이템이 없거나 내 옷이 아니면 막음(남의 id를 URL에 넣는 경우 방어)
+  // 둘 다 "찾을 수 없음"으로 응답해 남의 옷 존재 여부를 숨김
+  if (!item || session.id !== item.userId) {
+    return { success: false, error: "아이템을 찾을 수 없습니다." }; //item이 null일 가능성, 타인의 id의 item사용 가능성 차단
   }
   //내 옷장 전체 조회(매칭후보)
   const closet = await db.item.findMany({
@@ -149,7 +152,10 @@ export async function recommendOutfit(itemId: string) {
 
   // 추천 의상 이미지 표현을 위해 db재조회
   const recommendedItems = await db.item.findMany({
-    where: { id: { in: ids } }, //배열안에 ids가 있는 아이템을 전부 찾음
+    where: {
+      userId: session.id, // AI가 준 id도 믿지 않고 내 옷장에서만 찾음
+      id: { in: ids },
+    }, //배열안에 ids가 있는 아이템을 전부 찾음
   });
   return { success: true, items: recommendedItems };
 }
